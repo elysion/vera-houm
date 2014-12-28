@@ -39,6 +39,12 @@ function init(options) {
         }
     })
 
+    socket.on("close", function() { console.log("Websocket closed") })
+    socket.on("error", function() { console.log("Websocket error") })
+    socket.on("ping", socket.pong)
+
+    setInterval(function() {socket.ping(null, {}, false)}, 3000)
+
     return Bacon.fromEventTarget(socket, 'message').map('.data').map(JSON.parse)
 }
 
